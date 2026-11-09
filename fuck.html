@@ -256,9 +256,9 @@ footer {
 <main>
 
 <section class="intro">
-    <div class="tag">MAKE IT SPECIAL</div>
-    <h1>Birthday <span>Surprises.</span></h1>
-    <p class="subtitle">
+    <div class="tag" id="categoryTag">MAKE IT SPECIAL</div>
+    <h1 id="pageTitle">Birthday <span>Surprises.</span></h1>
+    <p class="subtitle" id="pageSubtitle">
         A little surprise can make someone's birthday unforgettable.
         Choose a design to begin.
     </p>
@@ -269,9 +269,9 @@ footer {
 <section class="cards" id="birthdayCards"></section>
 
 <div class="empty" id="emptyMessage">
-    <div class="empty-icon">🎂</div>
-    <h3>Coming Soon</h3>
-    <p>Birthday surprises will appear here soon.</p>
+    <div class="empty-icon" id="emptyIcon">🎂</div>
+    <h3 id="emptyTitle">Coming Soon</h3>
+    <p id="emptyText">Birthday surprises will appear here soon.</p>
 </div>
 
 </main>
@@ -279,46 +279,123 @@ footer {
 <footer>MADE WITH ♥ BY RHK WISHES</footer>
 
 <script>
+
+// Automatically identify category from page filename.
+// birthday.html = birthday
+// surprise.html = surprise
+// proposal.html = proposal
+
+const pageFile = decodeURIComponent(
+    window.location.pathname.split("/").pop()
+);
+
+const category = pageFile.replace(/\.html$/i, "").toLowerCase();
+
+const categorySettings = {
+    birthday: {
+        label: "Birthday",
+        headline: "Surprises.",
+        tag: "MAKE IT SPECIAL",
+        emoji: "🎂",
+        subtitle: "A little surprise can make someone's birthday unforgettable. Choose a design to begin.",
+        description: "A sweet birthday experience with a surprise message."
+    },
+
+    surprise: {
+        label: "Surprise",
+        headline: "Moments.",
+        tag: "CREATE A SURPRISE",
+        emoji: "🎁",
+        subtitle: "Create a special surprise and make someone's day unforgettable.",
+        description: "A special surprise experience made with love."
+    },
+
+    proposal: {
+        label: "Proposal",
+        headline: "Moments.",
+        tag: "EXPRESS YOUR FEELINGS",
+        emoji: "💖",
+        subtitle: "Make your special moment unforgettable. Choose a design to begin.",
+        description: "A beautiful way to express your feelings."
+    },
+
+    anniversary: {
+        label: "Anniversary",
+        headline: "Memories.",
+        tag: "CELEBRATE LOVE",
+        emoji: "💝",
+        subtitle: "Celebrate beautiful memories with a special digital surprise.",
+        description: "A memorable anniversary experience."
+    },
+
+    congratulation: {
+        label: "Congratulations",
+        headline: "Celebrations.",
+        tag: "CELEBRATE SUCCESS",
+        emoji: "🎉",
+        subtitle: "Make someone's achievement even more memorable.",
+        description: "A special celebration card."
+    }
+};
+
+const settings = categorySettings[category] || {
+    label: category.charAt(0).toUpperCase() + category.slice(1),
+    headline: "Surprises.",
+    tag: "MAKE IT SPECIAL",
+    emoji: "🎁",
+    subtitle: "Choose a design and create a special memory.",
+    description: "A special experience made with love."
+};
+
+document.title = settings.label + " Wishes | RHK WISHES";
+
+document.getElementById("categoryTag").textContent = settings.tag;
+
+document.getElementById("pageTitle").innerHTML =
+    settings.label + ' <span>' + settings.headline + '</span>';
+
+document.getElementById("pageSubtitle").textContent =
+    settings.subtitle;
+
+document.getElementById("emptyIcon").textContent = settings.emoji;
+
+document.getElementById("emptyText").textContent =
+    settings.label + " templates will appear here soon.";
+
+
+// GITHUB API
+
+const API_URL =
+"https://api.github.com/repos/instagrammeta9292-bot/RHK-WISHES/contents?ref=main";
+
 const cards = document.getElementById("birthdayCards");
 const emptyMessage = document.getElementById("emptyMessage");
-
-const MAX_TEMPLATES = 100;
 
 const designs = [
     {
         background: "preview-one",
-        emoji: "🎂",
-        title: "Happy Birthday",
+        emoji: settings.emoji,
+        title: settings.label,
         subtitle: "A SPECIAL SURPRISE",
-        name: "Birthday Surprise",
-        description: "A sweet birthday experience with a surprise message."
+        name: settings.label + " Surprise",
+        description: settings.description
     },
     {
         background: "preview-two",
-        emoji: "🎉",
+        emoji: "✨",
         title: "Celebrate You",
         subtitle: "MADE WITH LOVE",
-        name: "Celebration Card",
-        description: "A beautiful card to make their special day memorable."
+        name: "Special Card",
+        description: "A beautiful card to make the moment memorable."
     }
 ];
 
-async function checkTemplate(number) {
-    const file = `birthday${number}.html`;
+function createCard(number, filename) {
 
-    try {
-        const response = await fetch(file, { method: "HEAD" });
-        return response.ok;
-    } catch (error) {
-        return false;
-    }
-}
-
-function createCard(number) {
     const design = designs[(number - 1) % designs.length];
 
     const card = document.createElement("a");
-    card.href = `birthday${number}.html`;
+    card.href = filename;
     card.className = "card";
 
     card.innerHTML = `
@@ -345,26 +422,77 @@ function createCard(number) {
     cards.appendChild(card);
 }
 
+
 async function loadTemplates() {
-    const results = await Promise.all(
-        Array.from({ length: MAX_TEMPLATES }, (_, i) =>
-            checkTemplate(i + 1)
-        )
-    );
 
-    let count = 0;
+    try {
 
-    results.forEach((exists, index) => {
-        if (exists) {
-            createCard(index + 1);
-            count++;
+        const response = await fetch(API_URL, {
+            headers: {
+                "Accept": "application/vnd.github+json"
+            },
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("GitHub API error: " + response.status);
         }
-    });
 
-    emptyMessage.style.display = count === 0 ? "block" : "none";
+        const files = await response.json();
+
+        // Find files matching this category.
+        // birthday.html is the category page.
+        // birthday1.html, birthday2.html are templates.
+        // surprise1.html, surprise2.html are Surprise templates.
+
+        const pattern = new RegExp(
+            "^" + category.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") +
+            "(\\d+)\\.html$",
+            "i"
+        );
+
+        const templates = files
+            .filter(file => file.type === "file")
+            .map(file => {
+                const match = file.name.match(pattern);
+
+                if (!match) return null;
+
+                return {
+                    filename: file.name,
+                    number: Number(match[1])
+                };
+            })
+            .filter(Boolean)
+            .sort((a, b) => a.number - b.number);
+
+        cards.innerHTML = "";
+
+        templates.forEach(template => {
+            createCard(template.number, template.filename);
+        });
+
+        emptyMessage.style.display =
+            templates.length === 0 ? "block" : "none";
+
+    } catch (error) {
+
+        console.error(error);
+
+        cards.innerHTML = "";
+
+        emptyMessage.style.display = "block";
+
+        document.getElementById("emptyTitle").textContent =
+            "Unable to load templates";
+
+        document.getElementById("emptyText").textContent =
+            "Please check your internet connection and refresh the page.";
+    }
 }
 
 loadTemplates();
+
 </script>
 
 </body>
