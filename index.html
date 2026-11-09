@@ -155,24 +155,6 @@ body {
     transform: scale(0.97);
 }
 
-/* JPG IMAGES */
-
-.birthday {
-    background-image: url("birthday.jpg");
-}
-
-.proposal {
-    background-image: url("proposal.jpg");
-}
-
-.anniversary {
-    background-image: url("anniversary.jpg");
-}
-
-.congratulation {
-    background-image: url("congratulation.jpg");
-}
-
 /* CARD TEXT */
 
 .card-top {
@@ -199,6 +181,19 @@ body {
     line-height: 1.4;
     color: #fff;
     text-shadow: 0 1px 5px #000;
+}
+
+/* EMPTY MESSAGE */
+
+.empty-message {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+    padding: 20px;
 }
 
 /* SMALL SCREENS */
@@ -229,7 +224,6 @@ body {
 
 <section class="hero">
     <h1>Moments become<br>memories.</h1>
-
     <p>
         Beautiful digital wishes, created to make
         someone's special day unforgettable.
@@ -243,50 +237,137 @@ body {
         <span>Choose a category</span>
     </div>
 
-    <div class="categories">
-
-        <a href="birthday.html" class="category-card birthday">
-            <div class="card-top">
-                <div class="card-arrow">↗</div>
-            </div>
-            <div>
-                <h3>Birthday</h3>
-                <p>Make their day special</p>
-            </div>
-        </a>
-
-        <a href="proposal.html" class="category-card proposal">
-            <div class="card-top">
-                <div class="card-arrow">↗</div>
-            </div>
-            <div>
-                <h3>Proposal</h3>
-                <p>Express your feelings</p>
-            </div>
-        </a>
-
-        <a href="anniversary.html" class="category-card anniversary">
-            <div class="card-top">
-                <div class="card-arrow">↗</div>
-            </div>
-            <div>
-                <h3>Anniversary</h3>
-                <p>Celebrate your love</p>
-            </div>
-        </a>
-
-        <a href="congratulation.html" class="category-card congratulation">
-            <div class="card-top">
-                <div class="card-arrow">↗</div>
-            </div>
-            <div>
-                <h3>Congratulation</h3>
-                <p>Celebrate their success</p>
-            </div>
-        </a>
-
+    <div class="categories" id="categories">
+        <div class="empty-message">Loading categories...</div>
     </div>
+
 </section>
+
+<script>
+const API_URL =
+"https://api.github.com/repos/instagrammeta9292-bot/RHK-WISHES/contents?ref=main";
+
+const categoriesBox = document.getElementById("categories");
+
+const descriptions = {
+    birthday: "Make their day special",
+    proposal: "Express your feelings",
+    anniversary: "Celebrate your love",
+    congratulation: "Celebrate their success"
+};
+
+function makeTitle(filename) {
+    return filename
+        .replace(/\.html$/i, "")
+        .replace(/[-_]+/g, " ")
+        .replace(/\b\w/g, letter => letter.toUpperCase());
+}
+
+async function loadCategories() {
+    try {
+        const response = await fetch(API_URL, {
+            headers: {
+                "Accept": "application/vnd.github+json"
+            },
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("GitHub API error: " + response.status);
+        }
+
+        const files = await response.json();
+
+        const htmlFiles = files.filter(file => {
+            if (file.type !== "file") return false;
+
+            const name = file.name.toLowerCase();
+
+            if (!name.endsWith(".html")) return false;
+            if (name === "index.html") return false;
+
+            // Numbered files are templates, not categories.
+            // Example: birthday1.html, birthday2.html
+            if (/^.+\d+\.html$/i.test(name)) return false;
+
+            return true;
+        });
+
+        categoriesBox.innerHTML = "";
+
+        if (htmlFiles.length === 0) {
+            categoriesBox.innerHTML =
+                '<div class="empty-message">No categories yet. Add a category HTML file to GitHub.</div>';
+            return;
+        }
+
+        htmlFiles.sort((a, b) =>
+            a.name.localeCompare(b.name)
+        );
+
+        for (const file of htmlFiles) {
+            const categoryName = file.name.replace(/\.html$/i, "");
+            const key = categoryName.toLowerCase();
+
+            const title = makeTitle(file.name);
+            const description =
+                descriptions[key] || "Create a special memory";
+
+            const imageName = categoryName + ".jpg";
+
+            const imageExists = files.some(item =>
+                item.type === "file" &&
+                item.name.toLowerCase() === imageName.toLowerCase()
+            );
+
+            const card = document.createElement("a");
+            card.className = "category-card";
+            card.href = file.name;
+
+            if (imageExists) {
+                card.style.backgroundImage =
+                    'url("' + encodeURIComponent(imageName) + '")';
+            } else {
+                card.style.backgroundImage =
+                    "linear-gradient(135deg, #777, #292238)";
+            }
+
+            const top = document.createElement("div");
+            top.className = "card-top";
+
+            const arrow = document.createElement("div");
+            arrow.className = "card-arrow";
+            arrow.textContent = "↗";
+
+            top.appendChild(arrow);
+
+            const bottom = document.createElement("div");
+
+            const heading = document.createElement("h3");
+            heading.textContent = title;
+
+            const paragraph = document.createElement("p");
+            paragraph.textContent = description;
+
+            bottom.appendChild(heading);
+            bottom.appendChild(paragraph);
+
+            card.appendChild(top);
+            card.appendChild(bottom);
+
+            categoriesBox.appendChild(card);
+        }
+
+    } catch (error) {
+        console.error(error);
+
+        categoriesBox.innerHTML =
+            '<div class="empty-message">Could not load categories. Please refresh the page.</div>';
+    }
+}
+
+loadCategories();
+</script>
 
 </body>
 </html>
