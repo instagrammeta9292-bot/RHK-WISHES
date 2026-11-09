@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Wishes | RHK WISHES</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #fffaf7;
+    color: #30252a;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    height: 75px;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1e7e5;
+}
+
+.logo {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #d66c87;
+}
+
+.back {
+    text-decoration: none;
+    color: #55464b;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 9px 15px;
+    border: 1px solid #eadbdc;
+    border-radius: 30px;
+}
+
+main {
+    max-width: 900px;
+    margin: auto;
+    padding: 35px 20px 50px;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.tag {
+    display: inline-block;
+    color: #c35d7b;
+    background: #fce9ee;
+    padding: 7px 15px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 8vw, 48px);
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+h1 span {
+    color: #d66c87;
+    font-style: italic;
+}
+
+.subtitle {
+    color: #897a7e;
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 330px;
+    margin: auto;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    color: #8b777d;
+    margin-bottom: 17px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.card {
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border-radius: 19px;
+    overflow: hidden;
+    border: 1px solid #f0e5e5;
+    box-shadow: 0 7px 25px rgba(75, 39, 49, 0.06);
+    transition: transform 0.2s ease;
+}
+
+.card:active {
+    transform: scale(0.97);
+}
+
+.preview {
+    height: 175px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.preview-one {
+    background: linear-gradient(145deg, #ffdce5, #f5a9bd);
+}
+
+.preview-two {
+    background: linear-gradient(145deg, #d9e8ff, #a9b8f4);
+}
+
+.preview-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.emoji {
+    font-size: 42px;
+    margin-bottom: 7px;
+    display: block;
+}
+
+.preview-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+    color: #633c4c;
+}
+
+.preview-content p {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #754c5c;
+    margin-top: 5px;
+    font-weight: 700;
+}
+
+.decor {
+    position: absolute;
+    font-size: 25px;
+    opacity: 0.65;
+}
+
+.decor.a { top: 17px; left: 18px; }
+.decor.b { bottom: 15px; right: 18px; }
+.decor.c { top: 22px; right: 25px; font-size: 19px; }
+.decor.d { bottom: 17px; left: 25px; font-size: 19px; }
+
+.card-info {
+    padding: 15px 14px 16px;
+}
+
+.card-info h3 {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.card-info p {
+    font-size: 11px;
+    color: #98898d;
+    line-height: 1.5;
+}
+
+.open {
+    display: inline-block;
+    color: #ce6682;
+    font-size: 11px;
+    font-weight: 800;
+    margin-top: 12px;
+}
+
+.empty {
+    display: none;
+    text-align: center;
+    padding: 35px 15px;
+    color: #98898d;
+    background: white;
+    border-radius: 18px;
+    border: 1px solid #f0e5e5;
+}
+
+.empty .empty-icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.empty h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #55464b;
+    margin-bottom: 7px;
+}
+
+.empty p {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    color: #aa999d;
+    font-size: 11px;
+    padding: 35px 10px 20px;
+    letter-spacing: 0.5px;
+}
+
+@media (min-width: 650px) {
+    main { padding-top: 55px; }
+    .cards { gap: 22px; }
+    .preview { height: 220px; }
+    .card-info { padding: 19px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">RHK <span>WISHES.</span></div>
+    <a href="index.html" class="back">← Home</a>
+</header>
+
+<main>
+
+<section class="intro">
+    <div class="tag">MAKE IT SPECIAL</div>
+    <h1>Birthday <span>Surprises.</span></h1>
+    <p class="subtitle">
+        A little surprise can make someone's birthday unforgettable.
+        Choose a design to begin.
+    </p>
+</section>
+
+<div class="section-title">CHOOSE YOUR TEMPLATE</div>
+
+<section class="cards" id="birthdayCards"></section>
+
+<div class="empty" id="emptyMessage">
+    <div class="empty-icon">🎂</div>
+    <h3>Coming Soon</h3>
+    <p>Birthday surprises will appear here soon.</p>
+</div>
+
+</main>
+
+<footer>MADE WITH ♥ BY RHK WISHES</footer>
+
+<script>
+const cards = document.getElementById("birthdayCards");
+const emptyMessage = document.getElementById("emptyMessage");
+
+const MAX_TEMPLATES = 100;
+
+const designs = [
+    {
+        background: "preview-one",
+        emoji: "🎂",
+        title: "Happy Birthday",
+        subtitle: "A SPECIAL SURPRISE",
+        name: "Birthday Surprise",
+        description: "A sweet birthday experience with a surprise message."
+    },
+    {
+        background: "preview-two",
+        emoji: "🎉",
+        title: "Celebrate You",
+        subtitle: "MADE WITH LOVE",
+        name: "Celebration Card",
+        description: "A beautiful card to make their special day memorable."
+    }
+];
+
+async function checkTemplate(number) {
+    const file = `birthday${number}.html`;
+
+    try {
+        const response = await fetch(file, { method: "HEAD" });
+        return response.ok;
+    } catch (error) {
+        return false;
+    }
+}
+
+function createCard(number) {
+    const design = designs[(number - 1) % designs.length];
+
+    const card = document.createElement("a");
+    card.href = `birthday${number}.html`;
+    card.className = "card";
+
+    card.innerHTML = `
+        <div class="preview ${design.background}">
+            <span class="decor a">✨</span>
+            <span class="decor b">🎈</span>
+            <span class="decor c">♡</span>
+            <span class="decor d">⭐</span>
+
+            <div class="preview-content">
+                <span class="emoji">${design.emoji}</span>
+                <h2>${design.title}</h2>
+                <p>${design.subtitle}</p>
+            </div>
+        </div>
+
+        <div class="card-info">
+            <h3>${design.name} ${number}</h3>
+            <p>${design.description}</p>
+            <span class="open">VIEW TEMPLATE →</span>
+        </div>
+    `;
+
+    cards.appendChild(card);
+}
+
+async function loadTemplates() {
+    const results = await Promise.all(
+        Array.from({ length: MAX_TEMPLATES }, (_, i) =>
+            checkTemplate(i + 1)
+        )
+    );
+
+    let count = 0;
+
+    results.forEach((exists, index) => {
+        if (exists) {
+            createCard(index + 1);
+            count++;
+        }
+    });
+
+    emptyMessage.style.display = count === 0 ? "block" : "none";
+}
+
+loadTemplates();
+</script>
+
+</body>
+</html>
