@@ -131,20 +131,25 @@ h1 span {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background-size: cover;
+    background-position: center;
 }
 
 .preview-one {
-    background: linear-gradient(145deg, #ffdce5, #f5a9bd);
+    background-image: linear-gradient(145deg, #ffdce5, #f5a9bd);
 }
 
 .preview-two {
-    background: linear-gradient(145deg, #d9e8ff, #a9b8f4);
+    background-image: linear-gradient(145deg, #d9e8ff, #a9b8f4);
 }
 
 .preview-content {
     text-align: center;
     position: relative;
     z-index: 2;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.12);
 }
 
 .emoji {
@@ -257,7 +262,9 @@ footer {
 
 <section class="intro">
     <div class="tag" id="categoryTag">MAKE IT SPECIAL</div>
+
     <h1 id="pageTitle">Birthday <span>Surprises.</span></h1>
+
     <p class="subtitle" id="pageSubtitle">
         A little surprise can make someone's birthday unforgettable.
         Choose a design to begin.
@@ -280,10 +287,7 @@ footer {
 
 <script>
 
-// Automatically identify category from page filename.
-// birthday.html = birthday
-// surprise.html = surprise
-// proposal.html = proposal
+// IDENTIFY CATEGORY FROM HTML FILE NAME
 
 const pageFile = decodeURIComponent(
     window.location.pathname.split("/").pop()
@@ -292,6 +296,7 @@ const pageFile = decodeURIComponent(
 const category = pageFile.replace(/\.html$/i, "").toLowerCase();
 
 const categorySettings = {
+
     birthday: {
         label: "Birthday",
         headline: "Surprises.",
@@ -359,11 +364,8 @@ document.getElementById("pageSubtitle").textContent =
 
 document.getElementById("emptyIcon").textContent = settings.emoji;
 
-document.getElementById("emptyText").textContent =
-    settings.label + " templates will appear here soon.";
 
-
-// GITHUB API
+// GITHUB REPOSITORY API
 
 const API_URL =
 "https://api.github.com/repos/instagrammeta9292-bot/RHK-WISHES/contents?ref=main";
@@ -390,9 +392,14 @@ const designs = [
     }
 ];
 
+
+// CREATE TEMPLATE CARD WITH MATCHING JPG
+
 function createCard(number, filename) {
 
     const design = designs[(number - 1) % designs.length];
+
+    const imageName = filename.replace(/\.html$/i, ".jpg");
 
     const card = document.createElement("a");
     card.href = filename;
@@ -400,6 +407,7 @@ function createCard(number, filename) {
 
     card.innerHTML = `
         <div class="preview ${design.background}">
+
             <span class="decor a">✨</span>
             <span class="decor b">🎈</span>
             <span class="decor c">♡</span>
@@ -410,6 +418,7 @@ function createCard(number, filename) {
                 <h2>${design.title}</h2>
                 <p>${design.subtitle}</p>
             </div>
+
         </div>
 
         <div class="card-info">
@@ -419,9 +428,27 @@ function createCard(number, filename) {
         </div>
     `;
 
+    const preview = card.querySelector(".preview");
+
+    const img = new Image();
+
+    img.onload = () => {
+        preview.style.backgroundImage =
+            `url("${imageName}")`;
+    };
+
+    img.onerror = () => {
+        // Keep the original gradient when JPG is missing.
+        preview.style.backgroundImage = "";
+    };
+
+    img.src = imageName;
+
     cards.appendChild(card);
 }
 
+
+// LOAD ALL MATCHING HTML FILES FROM GITHUB
 
 async function loadTemplates() {
 
@@ -440,20 +467,20 @@ async function loadTemplates() {
 
         const files = await response.json();
 
-        // Find files matching this category.
-        // birthday.html is the category page.
-        // birthday1.html, birthday2.html are templates.
-        // surprise1.html, surprise2.html are Surprise templates.
+        const escapedCategory = category.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&"
+        );
 
         const pattern = new RegExp(
-            "^" + category.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") +
-            "(\\d+)\\.html$",
+            "^" + escapedCategory + "(\\d+)\\.html$",
             "i"
         );
 
         const templates = files
             .filter(file => file.type === "file")
             .map(file => {
+
                 const match = file.name.match(pattern);
 
                 if (!match) return null;
@@ -462,6 +489,7 @@ async function loadTemplates() {
                     filename: file.name,
                     number: Number(match[1])
                 };
+
             })
             .filter(Boolean)
             .sort((a, b) => a.number - b.number);
