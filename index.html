@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RHK WISHES</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #f8f7f9;
+    color: #171717;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+
+.navbar {
+    height: 60px;
+    flex-shrink: 0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #888;
+    font-weight: 500;
+}
+
+.menu {
+    font-size: 25px;
+}
+
+/* HERO */
+
+.hero {
+    flex-shrink: 0;
+    padding: 35px 22px 25px;
+    background: linear-gradient(135deg, #faf9f6, #f0edf5);
+}
+
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 8vw, 39px);
+    line-height: 1.15;
+    letter-spacing: -1px;
+}
+
+.hero p {
+    margin-top: 12px;
+    max-width: 340px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* CATEGORIES */
+
+.categories-section {
+    flex: 1;
+    min-height: 0;
+    padding: 22px 20px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(180deg, #f0edf5, #f8f7f9);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.section-heading h2 {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.section-heading span {
+    font-size: 11px;
+    color: #666;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* PHOTO CARDS */
+
+.category-card {
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    padding: 13px;
+    border-radius: 16px;
+    border: 1px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    text-decoration: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-size: cover;
+    background-position: center;
+    isolation: isolate;
+}
+
+.category-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.05) 5%,
+        rgba(0,0,0,0.15) 40%,
+        rgba(0,0,0,0.78) 100%
+    );
+    z-index: -1;
+}
+
+.category-card:active {
+    transform: scale(0.97);
+}
+
+/* JPG IMAGES */
+
+.birthday {
+    background-image: url("birthday.jpg");
+}
+
+.proposal {
+    background-image: url("proposal.jpg");
+}
+
+.anniversary {
+    background-image: url("anniversary.jpg");
+}
+
+.congratulation {
+    background-image: url("congratulation.jpg");
+}
+
+/* CARD TEXT */
+
+.card-top {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.card-arrow {
+    font-size: 24px;
+    color: white;
+    text-shadow: 0 1px 5px #000;
+}
+
+.category-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-shadow: 0 1px 5px #000;
+}
+
+.category-card p {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #fff;
+    text-shadow: 0 1px 5px #000;
+}
+
+/* SMALL SCREENS */
+
+@media (max-height: 700px) {
+    .hero {
+        padding-top: 20px;
+        padding-bottom: 18px;
+    }
+
+    .categories-section {
+        padding-top: 15px;
+    }
+
+    .category-card {
+        padding: 9px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">RHK <span>WISHES.</span></div>
+    <div class="menu">☰</div>
+</header>
+
+<section class="hero">
+    <h1>Moments become<br>memories.</h1>
+
+    <p>
+        Beautiful digital wishes, created to make
+        someone's special day unforgettable.
+    </p>
+</section>
+
+<section class="categories-section">
+
+    <div class="section-heading">
+        <h2>Explore Categories</h2>
+        <span>Choose a category</span>
+    </div>
+
+    <div class="categories">
+
+        <a href="birthday.html" class="category-card birthday">
+            <div class="card-top">
+                <div class="card-arrow">↗</div>
+            </div>
+            <div>
+                <h3>Birthday</h3>
+                <p>Make their day special</p>
+            </div>
+        </a>
+
+        <a href="proposal.html" class="category-card proposal">
+            <div class="card-top">
+                <div class="card-arrow">↗</div>
+            </div>
+            <div>
+                <h3>Proposal</h3>
+                <p>Express your feelings</p>
+            </div>
+        </a>
+
+        <a href="anniversary.html" class="category-card anniversary">
+            <div class="card-top">
+                <div class="card-arrow">↗</div>
+            </div>
+            <div>
+                <h3>Anniversary</h3>
+                <p>Celebrate your love</p>
+            </div>
+        </a>
+
+        <a href="congratulation.html" class="category-card congratulation">
+            <div class="card-top">
+                <div class="card-arrow">↗</div>
+            </div>
+            <div>
+                <h3>Congratulation</h3>
+                <p>Celebrate their success</p>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+</body>
+</html>
