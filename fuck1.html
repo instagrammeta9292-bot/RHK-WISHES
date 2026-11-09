@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise | RHK WISHES</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #fff8f5;
+    font-family: Arial, sans-serif;
+    color: #292020;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.container {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    padding: 30px 20px;
+    background: white;
+    border: 1px solid #f0deda;
+    border-radius: 22px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.07);
+    position: relative;
+    z-index: 2;
+}
+
+.brand {
+    font-size: 13px;
+    letter-spacing: 3px;
+    font-weight: bold;
+    color: #b36b75;
+    margin-bottom: 25px;
+}
+
+.cake {
+    font-size: 85px;
+    animation: bounce 2s infinite;
+}
+
+h1 {
+    font-size: 29px;
+    margin: 20px 0 10px;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+button {
+    margin-top: 25px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 30px;
+    background: #292020;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.message {
+    display: none;
+    margin-top: 25px;
+    padding: 18px;
+    background: #fff3f0;
+    border-radius: 15px;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.message h2 {
+    margin-bottom: 10px;
+    font-size: 21px;
+}
+
+.footer {
+    margin-top: 25px;
+    color: #aaa;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.balloon {
+    position: absolute;
+    font-size: 45px;
+    animation: float 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.b1 { top: 8%; left: 8%; }
+.b2 { top: 15%; right: 8%; animation-delay: 1s; }
+.b3 { bottom: 10%; left: 12%; animation-delay: 2s; }
+.b4 { bottom: 12%; right: 10%; animation-delay: 1.5s; }
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="balloon b1">🎈</div>
+<div class="balloon b2">🎈</div>
+<div class="balloon b3">🎉</div>
+<div class="balloon b4">🎈</div>
+
+<div class="container">
+
+    <div class="brand">RHK WISHES</div>
+
+    <div class="cake">🎂</div>
+
+    <h1>Happy Birthday!</h1>
+
+    <p class="subtitle">
+        Today is all about you.<br>
+        A little surprise is waiting for you.
+    </p>
+
+    <button onclick="showWish()">Open Your Surprise ✨</button>
+
+    <div class="message" id="message">
+        <h2>🎉 Make a Wish! 🎉</h2>
+        May your days be filled with happiness,
+        your dreams come true, and your smile
+        never fade. Have an amazing birthday!
+        ❤️
+    </div>
+
+    <div class="footer">MADE WITH LOVE</div>
+
+</div>
+
+<script>
+function showWish() {
+    document.getElementById("message").style.display = "block";
+}
+</script>
+
+</body>
+</html>
