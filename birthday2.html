@@ -459,8 +459,8 @@ button:disabled {
     </div>
 
 </div>
-
-
+</body>
+</html>
 <!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -757,8 +757,6 @@ async function createShareLink() {
 
         status.textContent = "Saving birthday surprise...";
 
-        // Separate database path for birthday2
-
         const wishRef = db.ref("birthday2Wishes").push();
 
         await wishRef.set({
@@ -770,8 +768,6 @@ async function createShareLink() {
             createdAt: firebase.database.ServerValue.TIMESTAMP
 
         });
-
-        // Generate link to birthday2.html
 
         const link = new URL(window.location.href);
 
@@ -875,20 +871,15 @@ async function shareLink() {
 
 }
 
-
-// ======================================
+</script>
+<script>
 // LOAD SHARED BIRTHDAY
-// ======================================
-
 async function loadBirthday() {
-
     const params = new URLSearchParams(window.location.search);
-
     const id = params.get("wish");
 
+    // No share ID means the creator/editor page should remain visible.
     if (!id) return;
-
-    // Validate Firebase key
 
     if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
         showError("Invalid birthday link.");
@@ -897,17 +888,15 @@ async function loadBirthday() {
 
     document.getElementById("editor").style.display = "none";
 
-    document.getElementById("experience").style.display = "block";
-
-    document.getElementById("experience").innerHTML =
+    const experience = document.getElementById("experience");
+    experience.style.display = "block";
+    experience.innerHTML =
         '<div class="loading">Preparing your birthday surprise... 🎁</div>';
 
     try {
-
         await auth.signInAnonymously();
 
-        const snapshot = await db.ref("birthday2Wishes/" + id)
-            .once("value");
+        const snapshot = await db.ref("birthday2Wishes/" + id).once("value");
 
         if (!snapshot.exists()) {
             throw new Error("Birthday surprise not found.");
@@ -919,41 +908,93 @@ async function loadBirthday() {
             throw new Error("Birthday information is incomplete.");
         }
 
-        if (typeof data.photo !== "string" ||
-            !/^https:\/\/res\.cloudinary\.com\//.test(data.photo)) {
+        // Accept only Cloudinary-hosted image URLs.
+        const photoURL = new URL(data.photo);
+
+        if (
+            photoURL.protocol !== "https:" ||
+            photoURL.hostname !== "res.cloudinary.com"
+        ) {
             throw new Error("Invalid birthday photo.");
         }
 
-        // Rebuild the experience
+        birthdayData = {
+            name: data.name,
+            photo: photoURL.href
+        };
 
-        document.getElementById("experience").innerHTML = `
-
+        experience.innerHTML = `
             <div class="intro-card" id="introCard">
-
                 <div class="cake">🎂</div>
-
-                <h2>
-                    Happy Birthday<br>
-                    <span id="receiverName"></span>!
-                </h2>
-
-                <p>
-                    Someone has prepared a little surprise
-                    especially for you.
-                    Ready to discover it?
-                </p>
-
+                <h2>Happy Birthday<br><span id="receiverName"></span>!</h2>
+                <p>Someone has prepared a little surprise especially for you. Ready to discover it?</p>
                 <button class="open-button" onclick="openSurprise()">
                     Open Your Surprise 🎁
                 </button>
-
             </div>
 
             <div id="photoReveal">
+                <h2 class="photo-heading">A Special Memory ❤️</h2>
+                <p class="photo-subtitle">A beautiful moment, made even more special today.</p>
 
-                <h2 class="photo-heading">
-                    A Special Memory ❤️
+                <div class="memory-frame">
+                    <img id="birthdayPhoto" src="" alt="Birthday memory">
+                </div>
+
+                <div class="photo-caption" id="photoName"></div>
+                <div class="heart-decoration">♡ ♡ ♡</div>
+
+                <h2 class="photo-heading" style="font-size:27px;margin-top:20px;">
+                    Happy Birthday! 💖
                 </h2>
+            </div>
+        `;
 
-                <p class="photo-subtitle">
-                    A beautiful moment, made even more special today.
+        // Insert user-provided text safely.
+        document.getElementById("receiverName").textContent = data.name;
+        document.getElementById("birthdayPhoto").src = photoURL.href;
+        document.getElementById("photoName").textContent =
+            "With love, for " + data.name;
+
+    } catch (error) {
+        console.error("Birthday loading error:", error);
+        showError(error.message || "Could not load this birthday surprise.");
+    }
+}
+
+
+// ERROR SCREEN
+function showError(message) {
+    document.getElementById("editor").style.display = "none";
+
+    const experience = document.getElementById("experience");
+    experience.style.display = "block";
+    experience.innerHTML = "";
+
+    const card = document.createElement("div");
+    card.className = "intro-card";
+
+    const heading = document.createElement("h2");
+    heading.textContent = "Oops! 🎁";
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = message;
+
+    const button = document.createElement("button");
+    button.className = "open-button";
+    button.textContent = "Back to Home";
+    button.onclick = function () {
+        window.location.href = window.location.pathname;
+    };
+
+    card.append(heading, paragraph, button);
+    experience.appendChild(card);
+}
+
+
+// START
+loadBirthday();
+</script>
+
+</body>
+</html>
