@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise | RHK WISHES</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg,#fff0f5,#f5e5ff,#fff4e9);
+    color: #493447;
+    overflow-x: hidden;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.brand {
+    text-align: center;
+    color: #c75d91;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    padding-top: 25px;
+}
+
+.container {
+    width: calc(100% - 30px);
+    max-width: 430px;
+    margin: 30px auto;
+    padding: 27px 22px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 12px 40px #9e689322;
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Playfair Display',serif;
+    font-size: 29px;
+    margin: 15px 0 10px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #927e8e;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    color: #72596b;
+    margin: 18px 0 8px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ead8e4;
+    background: #fffafd;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    color: #493447;
+}
+
+input:focus {
+    border-color: #d05b91;
+}
+
+input[type="file"] {
+    font-size: 12px;
+}
+
+.photo-preview {
+    display: none;
+    margin-top: 15px;
+    position: relative;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.remove-photo {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+    background: #493447;
+}
+
+.primary {
+    width: 100%;
+    padding: 16px;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#e66b9c,#ad65d8);
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    margin-top: 18px;
+    box-shadow: 0 7px 18px #d45d9130;
+}
+
+.secondary {
+    width: 100%;
+    padding: 15px;
+    border-radius: 13px;
+    background: #fff1f7;
+    color: #b75d91;
+    font-size: 14px;
+    font-weight: 800;
+    margin-top: 12px;
+}
+
+button:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.status {
+    text-align: center;
+    font-size: 12px;
+    color: #927e8e;
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+#shareResult {
+    display: none;
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 13px;
+    background: #fff1f7;
+}
+
+#shareLink {
+    font-size: 12px;
+    word-break: break-all;
+    color: #b44e80;
+    margin-top: 10px;
+}
+
+#shareResult button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 11px;
+    background: #d45d91;
+    color: white;
+    font-weight: 800;
+}
+
+/* EXPERIENCE */
+
+#experience {
+    display: none;
+    min-height: 90vh;
+    padding: 30px 15px 50px;
+    text-align: center;
+}
+
+.intro-card {
+    width: 100%;
+    max-width: 420px;
+    min-height: 520px;
+    margin: 20px auto;
+    padding: 35px 22px;
+    border-radius: 28px;
+    background: linear-gradient(145deg,#fff,#fff0f7);
+    box-shadow: 0 20px 60px #a65e8b25;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1.3s cubic-bezier(.7,0,.2,1),
+                opacity 1s ease;
+    transform-origin: left center;
+}
+
+.intro-card.opening {
+    transform: perspective(1200px) rotateY(-90deg) scale(.85);
+    opacity: 0;
+}
+
+.cake {
+    font-size: 90px;
+    margin-bottom: 25px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.intro-card h2 {
+    font-family: 'Playfair Display',serif;
+    font-size: clamp(35px,9vw,48px);
+    line-height: 1.25;
+    color: #d45d91;
+}
+
+.intro-card h2 span {
+    color: #9d65ca;
+    overflow-wrap: anywhere;
+}
+
+.intro-card p {
+    color: #927e8e;
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 20px 0 30px;
+}
+
+.open-button {
+    padding: 16px 28px;
+    border-radius: 30px;
+    background: linear-gradient(135deg,#e66b9c,#ad65d8);
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: 0 8px 20px #d45d9140;
+    animation: pulse 2s infinite;
+}
+
+/* PHOTO REVEAL */
+
+#photoReveal {
+    display: none;
+    max-width: 430px;
+    margin: 30px auto;
+    padding: 20px;
+    animation: reveal 1.5s ease both;
+}
+
+.photo-heading {
+    font-family: 'Playfair Display',serif;
+    font-size: 34px;
+    color: #bd648e;
+    line-height: 1.3;
+}
+
+.photo-subtitle {
+    color: #927e8e;
+    font-size: 13px;
+    margin: 12px 0 25px;
+}
+
+.memory-frame {
+    position: relative;
+    padding: 12px;
+    background: linear-gradient(135deg,#fff,#fce5f0,#eee0ff);
+    border-radius: 22px;
+    box-shadow: 0 15px 40px #9e689333;
+    transform: scale(.85);
+    opacity: 0;
+    animation: photoEnter 1.5s .4s ease forwards;
+}
+
+.memory-frame img {
+    width: 100%;
+    max-height: 440px;
+    min-height: 260px;
+    object-fit: cover;
+    border-radius: 14px;
+    display: block;
+}
+
+.photo-caption {
+    font-family: 'Playfair Display',serif;
+    font-size: 25px;
+    color: #bd648e;
+    margin-top: 25px;
+    overflow-wrap: anywhere;
+}
+
+.heart-decoration {
+    font-size: 28px;
+    margin-top: 15px;
+    color: #d45d91;
+}
+
+.back-button {
+    margin-top: 30px;
+    background: white;
+    color: #b75d91;
+    border: 1px solid #eed9e7;
+    padding: 13px 23px;
+    border-radius: 30px;
+    font-weight: 800;
+}
+
+.loading {
+    padding: 80px 15px;
+    color: #927e8e;
+    text-align: center;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse {
+    0%,100% { box-shadow: 0 8px 20px #d45d9140; }
+    50% { box-shadow: 0 8px 28px #d45d9180; }
+}
+
+@keyframes reveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes photoEnter {
+    from { opacity: 0; transform: scale(.85); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@media(max-width:370px) {
+    .intro-card { min-height: 460px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="brand">RHK WISHES</div>
+
+<!-- CREATOR EDITOR -->
+
+<div class="container" id="editor">
+
+    <h1>Create a Birthday Surprise 🎂</h1>
+
+    <p class="subtitle">
+        Make a beautiful birthday surprise with
+        a special name and a memorable photo.
+    </p>
+
+    <label>Birthday Person's Name</label>
+    <input
+        type="text"
+        id="personName"
+        maxlength="60"
+        placeholder="Enter their name"
+    >
+
+    <label>Upload One Photo</label>
+    <input
+        type="file"
+        id="personPhoto"
+        accept="image/*"
+    >
+
+    <div class="photo-preview" id="photoPreview">
+        <img id="previewImage" alt="Selected birthday photo">
+        <button class="remove-photo"
+                type="button"
+                onclick="removePhoto()">×</button>
+    </div>
+
+    <button class="primary" onclick="previewLocally()">
+        👁 Preview Locally
+    </button>
+
+    <button class="secondary" id="shareButton"
+            onclick="createShareLink()">
+        ✨ Customise & Share
+    </button>
+
+    <p class="status" id="status">
+        Your photo stays on your device until you choose to share.
+    </p>
+
+    <div id="shareResult">
+        <b>Your birthday surprise is ready! 🎉</b>
+        <p id="shareLink"></p>
+
+        <button onclick="copyLink()">Copy Link</button>
+        <button onclick="shareLink()">Share Surprise 💌</button>
+    </div>
+
+</div>
+
+
+<!-- BIRTHDAY EXPERIENCE -->
+
+<div id="experience">
+
+    <div class="intro-card" id="introCard">
+
+        <div class="cake">🎂</div>
+
+        <h2>
+            Happy Birthday<br>
+            <span id="receiverName"></span>!
+        </h2>
+
+        <p>
+            Someone has prepared a little surprise
+            especially for you.
+            Ready to discover it?
+        </p>
+
+        <button class="open-button" onclick="openSurprise()">
+            Open Your Surprise 🎁
+        </button>
+
+    </div>
+
+    <div id="photoReveal">
+
+        <h2 class="photo-heading">
+            A Special Memory ❤️
+        </h2>
+
+        <p class="photo-subtitle">
+            A beautiful moment, made even more special today.
+        </p>
+
+        <div class="memory-frame">
+            <img id="birthdayPhoto" src="" alt="Birthday memory">
+        </div>
+
+        <div class="photo-caption" id="photoName"></div>
+
+        <div class="heart-decoration">♡ ♡ ♡</div>
+
+        <h2 class="photo-heading" style="font-size:27px;margin-top:20px;">
+            Happy Birthday! 💖
+        </h2>
+
+        <button class="back-button" id="backButton"
+                onclick="backToEditor()" style="display:none;">
+            ← Back to Edit
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+
+// ======================================
+// FIREBASE CONFIGURATION
+// ======================================
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBND3n2ag9qGZG5SJPOKNVYr2dHNLwoD7Y",
+    authDomain: "rhk-music-24bbc.firebaseapp.com",
+    databaseURL: "https://rhk-music-24bbc-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "rhk-music-24bbc",
+    storageBucket: "rhk-music-24bbc.firebasestorage.app",
+    messagingSenderId: "571438674805",
+    appId: "1:571438674805:web:bcfe7856316b638d08193c",
+    measurementId: "G-RF4GEDGP9N"
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+const auth = firebase.auth();
+const db = firebase.database();
+
+
+// ======================================
+// CLOUDINARY CONFIGURATION
+// ======================================
+
+const CLOUDINARY_NAME = "nhy9lfkt";
+const UPLOAD_PRESET = "rhk_upload";
+
+
+// ======================================
+// VARIABLES
+// ======================================
+
+let selectedFile = null;
+let localPhotoURL = null;
+let generatedURL = "";
+let birthdayData = null;
+let isLocalPreview = false;
+
+
+// ======================================
+// PHOTO SELECTION
+// ======================================
+
+document.getElementById("personPhoto")
+.addEventListener("change", function() {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        alert("Please select an image.");
+        this.value = "";
+        return;
+    }
+
+    if (file.size > 8 * 1024 * 1024) {
+        alert("Photo must be smaller than 8 MB.");
+        this.value = "";
+        return;
+    }
+
+    selectedFile = file;
+
+    if (localPhotoURL) {
+        URL.revokeObjectURL(localPhotoURL);
+    }
+
+    localPhotoURL = URL.createObjectURL(file);
+
+    document.getElementById("previewImage").src = localPhotoURL;
+
+    document.getElementById("photoPreview").style.display = "block";
+
+    document.getElementById("status").textContent =
+        "Photo selected successfully! ❤️";
+
+});
+
+
+// ======================================
+// REMOVE PHOTO
+// ======================================
+
+function removePhoto() {
+
+    selectedFile = null;
+
+    if (localPhotoURL) {
+        URL.revokeObjectURL(localPhotoURL);
+        localPhotoURL = null;
+    }
+
+    document.getElementById("personPhoto").value = "";
+    document.getElementById("previewImage").src = "";
+    document.getElementById("photoPreview").style.display = "none";
+
+}
+
+
+// ======================================
+// GET INPUT DATA
+// ======================================
+
+function getFormData() {
+
+    const name = document.getElementById("personName")
+        .value.trim();
+
+    if (!name) {
+        alert("Please enter the birthday person's name.");
+        return false;
+    }
+
+    if (!selectedFile) {
+        alert("Please upload one photo.");
+        return false;
+    }
+
+    return {
+        name: name,
+        photo: localPhotoURL
+    };
+
+}
+
+
+// ======================================
+// SHOW BIRTHDAY EXPERIENCE
+// ======================================
+
+function showExperience(data, local = false) {
+
+    birthdayData = data;
+    isLocalPreview = local;
+
+    document.getElementById("editor").style.display = "none";
+    document.getElementById("experience").style.display = "block";
+
+    document.getElementById("receiverName").textContent = data.name;
+
+    document.getElementById("birthdayPhoto").src = data.photo;
+
+    document.getElementById("photoName").textContent =
+        "Made with love for " + data.name;
+
+    document.getElementById("introCard").classList.remove("opening");
+
+    document.getElementById("introCard").style.display = "flex";
+
+    document.getElementById("photoReveal").style.display = "none";
+
+    document.getElementById("backButton").style.display =
+        local ? "inline-block" : "none";
+
+    window.scrollTo(0,0);
+
+}
+
+
+// ======================================
+// PREVIEW LOCALLY
+// ======================================
+
+function previewLocally() {
+
+    const data = getFormData();
+
+    if (!data) return;
+
+    showExperience(data, true);
+
+}
+
+
+// ======================================
+// OPEN BIRTHDAY SURPRISE
+// ======================================
+
+function openSurprise() {
+
+    const intro = document.getElementById("introCard");
+
+    intro.classList.add("opening");
+
+    setTimeout(() => {
+
+        intro.style.display = "none";
+
+        document.getElementById("photoReveal").style.display = "block";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }, 1350);
+
+}
+
+
+// ======================================
+// RETURN TO EDITOR
+// ======================================
+
+function backToEditor() {
+
+    document.getElementById("experience").style.display = "none";
+
+    document.getElementById("editor").style.display = "block";
+
+    document.getElementById("introCard").classList.remove("opening");
+
+    document.getElementById("photoReveal").style.display = "none";
+
+    window.scrollTo(0,0);
+
+}
+
+
+// ======================================
+// UPLOAD PHOTO TO CLOUDINARY
+// ======================================
+
+async function uploadPhoto(file) {
+
+    const formData = new FormData();
+
+    formData.append("file",file);
+
+    formData.append("upload_preset",UPLOAD_PRESET);
+
+    const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.secure_url) {
+        throw new Error(
+            result.error?.message || "Photo upload failed."
+        );
+    }
+
+    return result.secure_url;
+
+}
+
+
+// ======================================
+// CREATE SHAREABLE LINK
+// ======================================
+
+async function createShareLink() {
+
+    const data = getFormData();
+
+    if (!data) return;
+
+    const button = document.getElementById("shareButton");
+
+    const status = document.getElementById("status");
+
+    button.disabled = true;
+
+    button.textContent = "Creating Surprise...";
+
+    document.getElementById("shareResult").style.display = "none";
+
+    try {
+
+        status.textContent = "Connecting to Firebase...";
+
+        await auth.signInAnonymously();
+
+        status.textContent = "Uploading your photo...";
+
+        const photoURL = await uploadPhoto(selectedFile);
+
+        status.textContent = "Saving birthday surprise...";
+
+        // Separate database path for birthday2
+
+        const wishRef = db.ref("birthday2Wishes").push();
+
+        await wishRef.set({
+
+            name: data.name,
+
+            photo: photoURL,
+
+            createdAt: firebase.database.ServerValue.TIMESTAMP
+
+        });
+
+        // Generate link to birthday2.html
+
+        const link = new URL(window.location.href);
+
+        link.search = "";
+
+        link.hash = "";
+
+        link.searchParams.set("wish",wishRef.key);
+
+        generatedURL = link.href;
+
+        document.getElementById("shareLink").textContent =
+            generatedURL;
+
+        document.getElementById("shareResult").style.display =
+            "block";
+
+        status.textContent =
+            "Your birthday surprise is ready! ❤️";
+
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth"
+        });
+
+    } catch(error) {
+
+        console.error(error);
+
+        status.textContent = "Error: " + error.message;
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent = "✨ Customise & Share";
+
+    }
+
+}
+
+
+// ======================================
+// COPY LINK
+// ======================================
+
+async function copyLink() {
+
+    if (!generatedURL) return;
+
+    try {
+
+        await navigator.clipboard.writeText(generatedURL);
+
+        alert("Birthday link copied successfully! ❤️");
+
+    } catch(error) {
+
+        prompt("Copy your birthday link:",generatedURL);
+
+    }
+
+}
+
+
+// ======================================
+// SHARE LINK
+// ======================================
+
+async function shareLink() {
+
+    if (!generatedURL) return;
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+
+                title: "Birthday Surprise 🎂",
+
+                text: "Someone made a special birthday surprise for you!",
+
+                url: generatedURL
+
+            });
+
+        } catch(error) {
+
+            if (error.name !== "AbortError") {
+                copyLink();
+            }
+
+        }
+
+    } else {
+
+        copyLink();
+
+    }
+
+}
+
+
+// ======================================
+// LOAD SHARED BIRTHDAY
+// ======================================
+
+async function loadBirthday() {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const id = params.get("wish");
+
+    if (!id) return;
+
+    // Validate Firebase key
+
+    if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
+        showError("Invalid birthday link.");
+        return;
+    }
+
+    document.getElementById("editor").style.display = "none";
+
+    document.getElementById("experience").style.display = "block";
+
+    document.getElementById("experience").innerHTML =
+        '<div class="loading">Preparing your birthday surprise... 🎁</div>';
+
+    try {
+
+        await auth.signInAnonymously();
+
+        const snapshot = await db.ref("birthday2Wishes/" + id)
+            .once("value");
+
+        if (!snapshot.exists()) {
+            throw new Error("Birthday surprise not found.");
+        }
+
+        const data = snapshot.val();
+
+        if (!data.name || !data.photo) {
+            throw new Error("Birthday information is incomplete.");
+        }
+
+        if (typeof data.photo !== "string" ||
+            !/^https:\/\/res\.cloudinary\.com\//.test(data.photo)) {
+            throw new Error("Invalid birthday photo.");
+        }
+
+        // Rebuild the experience
+
+        document.getElementById("experience").innerHTML = `
+
+            <div class="intro-card" id="introCard">
+
+                <div class="cake">🎂</div>
+
+                <h2>
+                    Happy Birthday<br>
+                    <span id="receiverName"></span>!
+                </h2>
+
+                <p>
+                    Someone has prepared a little surprise
+                    especially for you.
+                    Ready to discover it?
+                </p>
+
+                <button class="open-button" onclick="openSurprise()">
+                    Open Your Surprise 🎁
+                </button>
+
+            </div>
+
+            <div id="photoReveal">
+
+                <h2 class="photo-heading">
+                    A Special Memory ❤️
+                </h2>
+
+                <p class="photo-subtitle">
+                    A beautiful moment, made even more special today.
